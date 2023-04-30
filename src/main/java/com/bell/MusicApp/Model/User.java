@@ -2,19 +2,30 @@ package com.bell.MusicApp.Model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user")
 public class User {
 
-    @Id @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long id;
     @Column
     private String username;
     @Column
     private String password;
+
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Playlist> playlists;
 
 
     public String getUsername() {
@@ -24,10 +35,12 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
+    public List<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(List<Playlist> playlists) {
+        this.playlists = playlists;
     }
 
     public Long getId(Long id) {
@@ -55,12 +68,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(playlists, user.playlists);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password);
+        return Objects.hash(id, username, password, playlists);
     }
 
     @Override
@@ -69,6 +82,7 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", playlists=" + playlists +
                 '}';
     }
 }

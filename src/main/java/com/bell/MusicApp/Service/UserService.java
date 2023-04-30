@@ -2,12 +2,16 @@ package com.bell.MusicApp.Service;
 
 import com.bell.MusicApp.Model.User;
 import com.bell.MusicApp.Repository.UserRepository;
+import com.bell.MusicApp.exception.PasswrodIncorrectException;
+import com.bell.MusicApp.exception.UserNotFoundException;
+import com.bell.MusicApp.requests.UserLoginRequest;
 import com.bell.MusicApp.responses.ErrorResponse;
 import com.bell.MusicApp.responses.OkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.PasswordAuthentication;
 import java.util.List;
 
 @Service
@@ -30,29 +34,25 @@ public class UserService {
     }
 
     //login to a user account
-    public ResponseEntity login(User user){
+    public void login(UserLoginRequest user){
         User myuser=userRepository.findByUsername(user.getUsername());
 
-        ErrorResponse errorResponse=new ErrorResponse();
+
         if(myuser!=null){
 
             if(user.getPassword().equals(myuser.getPassword())){
-                OkResponse okResponse=new OkResponse();
-                okResponse.setMessage("Logged in!!");
 
-                return  ResponseEntity.ok().body(okResponse);
+                // maybe add somthing here ... ( returning jwt )
             }
             else{
-              errorResponse.setMessage("passsword incorrect");
-              return ResponseEntity.badRequest().body(errorResponse);
 
+            throw new PasswrodIncorrectException("Password incorrect");
             }
         }
+
         else{
 
-            errorResponse.setMessage("User not found exception.");
-
-            return ResponseEntity.badRequest().body(errorResponse);
+            throw new UserNotFoundException("Username not found exception");
         }
 
     }

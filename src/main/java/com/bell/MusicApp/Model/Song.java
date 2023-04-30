@@ -7,7 +7,7 @@ import lombok.Data;
 @Table(name="song")
 @Data
 public class Song {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long id;
     @Column

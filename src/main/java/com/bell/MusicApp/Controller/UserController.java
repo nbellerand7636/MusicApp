@@ -2,7 +2,12 @@ package com.bell.MusicApp.Controller;
 
 import com.bell.MusicApp.Model.User;
 import com.bell.MusicApp.Service.UserService;
+import com.bell.MusicApp.helpers.CODE;
+import com.bell.MusicApp.requests.UserLoginRequest;
+import com.bell.MusicApp.responses.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +40,15 @@ public class UserController {
    */
 
    @PostMapping("/login")
-   public ResponseEntity login(@RequestBody User user){
-      return userService.login(user);
+   public ResponseEntity login(@RequestBody UserLoginRequest userLoginRequest){
+
+      userService.login(userLoginRequest);
+      Response<Object> response = Response.builder()
+              .message("user is logged in successfully.")
+              .code(CODE.OK.getId())
+              .success(true)
+              .build();
+      return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
    }
 
 }
