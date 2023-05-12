@@ -1,4 +1,8 @@
 package com.bell.MusicApp.Repository;
 
-public class PlaylistRepository {
+import com.bell.MusicApp.Model.Playlist;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PlaylistRepository extends JpaRepository<Playlist,Long> {
+
 }

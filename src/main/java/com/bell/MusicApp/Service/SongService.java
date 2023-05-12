@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class SongService {
     @Autowired
-    SongRepository songRepository;
+    private SongRepository songRepository;
 
     public Song getSong(Long songId){
         return songRepository.findById(songId).get();
